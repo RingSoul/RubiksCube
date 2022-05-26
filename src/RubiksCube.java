@@ -153,6 +153,7 @@ public class RubiksCube {
                     }
                 }
             }
+            updateAllViews();
         }
     }
 
@@ -232,6 +233,16 @@ public class RubiksCube {
 
     }
 
+    // this method updates all views
+    private void updateAllViews()
+    {
+        updateFrontView();
+        updateBackView();
+        updateBottomView();
+        updateTopView();
+        updateLeftView();
+        updateRightView();
+    }
 
 
 
@@ -359,26 +370,17 @@ public class RubiksCube {
                     cube.setFront(right);
                 }
             }
+            updateAllViews();
         }
-        updateFrontView();
-        updateBackView();
-        updateBottomView();
-        updateTopView();
-        updateLeftView();
-        updateRightView();
     }
+    // this method rotates the perspective leftward
     public void changePerspectiveLeftward()
     {
         for (int r = 0; r < size; r++)
         {
             rowRotationLeft(r);
         }
-        updateFrontView();
-        updateBackView();
-        updateBottomView();
-        updateTopView();
-        updateLeftView();
-        updateRightView();
+        updateAllViews();
     }
 
 
@@ -403,7 +405,6 @@ public class RubiksCube {
                 rightCubes[z] = rubiksCube[rowNum][size-1][z+1]; // going to the front side, front to back --> left to right
             }
             // corner cubes
-            // corner cubes
             Cube frontLeft = rubiksCube[rowNum][0][0]; // saving the front left corner based on the front view
             Cube frontRight = rubiksCube[rowNum][size-1][0]; // saving the front right corner based on the front view
             Cube backLeft = rubiksCube[rowNum][0][size-1]; // saving the back left corner based on the front view
@@ -416,7 +417,6 @@ public class RubiksCube {
             rubiksCube[rowNum][size-1][0] = frontLeft;
             rubiksCube[rowNum][size-1][size-1] = frontRight;
             // other than corners
-            // front change
             int index; // of the arrays (cubes other than corners)
             // frontCubes (left to right)
             index = 0;
@@ -481,36 +481,239 @@ public class RubiksCube {
                     cube.setFront(left);
                 }
             }
+            updateAllViews();
         }
-        updateFrontView();
-        updateBackView();
-        updateBottomView();
-        updateTopView();
-        updateLeftView();
-        updateRightView();
     }
+    // this method rotates the perspective rightward
     public void changePerspectiveRightward()
     {
         for (int r = 0; r < size; r++)
         {
             rowRotationRight(r);
         }
-        updateFrontView();
-        updateBackView();
-        updateBottomView();
-        updateTopView();
-        updateLeftView();
-        updateRightView();
+        updateAllViews();
     }
 
     public void colRotationUp(int colNum)
     {
+        if (rubiksCube != null)
+        {
+            /* variables */
+            // exclusive of corner cubes
+            Cube[] frontCubes = new Cube[size-2];
+            Cube[] backCubes = new Cube[size-2];
+            Cube[] topCubes = new Cube[size-2];
+            Cube[] bottomCubes = new Cube[size-2];
+            for (int r = 0; r < frontCubes.length; r++)
+            {
+                frontCubes[r] = rubiksCube[r+1][colNum][0]; // going to the left side, left to right --> back to front
+                backCubes[r] = rubiksCube[r+1][colNum][size-1]; // going to the right side, left to right --> back to front
+            }
+            for (int z = 0; z < topCubes.length; z++)
+            {
+                topCubes[z] = rubiksCube[0][colNum][z+1]; // going to the back side, front to back --> left to right
+                bottomCubes[z] = rubiksCube[size-1][colNum][z+1]; // going to the front side, front to back --> left to right
+            }
+            // corner cubes
+            Cube frontTop = rubiksCube[0][colNum][0]; // saving the front left corner based on the front view
+            Cube frontBottom = rubiksCube[size-1][colNum][0]; // saving the front right corner based on the front view
+            Cube backTop = rubiksCube[0][colNum][size-1]; // saving the back left corner based on the front view
+            Cube backBottom = rubiksCube[size-1][colNum][size-1]; // saving the back right corner based on the front view
 
+            /* changing position && changing sides */
+            // corners
+            rubiksCube[0][colNum][0] = frontBottom;
+            rubiksCube[size-1][colNum][0] = backBottom;
+            rubiksCube[0][colNum][size-1] = frontTop;
+            rubiksCube[size-1][colNum][size-1] = backTop;
+            // other than corners
+            int index; // of the arrays (cubes other than corners)
+            // frontCubes (top to bottom)
+            index = 0;
+            for (int destination = size - 2; destination >= 1; destination--) // back to front of top side
+            {
+                rubiksCube[0][colNum][destination] = frontCubes[index];
+                index++;
+            }
+            // backCubes (top to bottom)
+            index = 0;
+            for (int destination = size - 2; destination >= 1; destination--) // back to front of bottom side
+            {
+                rubiksCube[size-1][colNum][destination] = backCubes[index];
+                index++;
+            }
+            // topCubes (front to back)
+            index = 0;
+            for (int destination = 1; destination < size - 1; destination++) // top to bottom of back side
+            {
+                rubiksCube[destination][colNum][size-1] = topCubes[index];
+                index++;
+            }
+            // bottomCubes (front to back)
+            index = 0;
+            for (int destination = 1; destination < size - 1; destination++) // top to bottom of front side
+            {
+                rubiksCube[destination][colNum][0] = bottomCubes[index];
+                index++;
+            }
+
+            /* side adjustments (left and right side not impact) */
+            Cube[] corners = {frontTop, frontBottom, backTop, backBottom};
+            Cube[][] otherThanCorners = {frontCubes, backCubes, topCubes, bottomCubes};
+            for (int i = 0; i < 4; i++)
+            {
+                /* for corners */
+                Cube cube = corners[i];
+                // store sides as temps
+                Side front = cube.getFront();
+                Side back = cube.getBack();
+                Side top = cube.getTop();
+                Side bottom = cube.getBottom();
+                // change
+                cube.setFront(bottom);
+                cube.setBottom(back);
+                cube.setBack(top);
+                cube.setTop(front);
+
+                /* for cubes other than corners */
+                for (int c = 0; c < otherThanCorners[i].length; c++)
+                {
+                    cube = otherThanCorners[i][c];
+                    // store sides as temps
+                    front = cube.getFront();
+                    back = cube.getBack();
+                    top = cube.getTop();
+                    bottom = cube.getBottom();
+                    // change
+                    cube.setFront(bottom);
+                    cube.setBottom(back);
+                    cube.setBack(top);
+                    cube.setTop(front);
+                }
+            }
+            updateAllViews();
+        }
     }
+    // this method rotates the perspective upward
+    public void rotatePerspectiveUpward()
+    {
+        for (int c = 0; c < size; c++)
+        {
+            colRotationUp(c);
+        }
+    }
+
+
     public void colRotationDown(int colNum)
     {
+        if (rubiksCube != null)
+        {
+            /* variables */
+            // exclusive of corner cubes
+            Cube[] frontCubes = new Cube[size-2];
+            Cube[] backCubes = new Cube[size-2];
+            Cube[] topCubes = new Cube[size-2];
+            Cube[] bottomCubes = new Cube[size-2];
+            for (int r = 0; r < frontCubes.length; r++)
+            {
+                frontCubes[r] = rubiksCube[r+1][colNum][0]; // going to the left side, left to right --> back to front
+                backCubes[r] = rubiksCube[r+1][colNum][size-1]; // going to the right side, left to right --> back to front
+            }
+            for (int z = 0; z < topCubes.length; z++)
+            {
+                topCubes[z] = rubiksCube[0][colNum][z+1]; // going to the back side, front to back --> left to right
+                bottomCubes[z] = rubiksCube[size-1][colNum][z+1]; // going to the front side, front to back --> left to right
+            }
+            // corner cubes
+            Cube frontTop = rubiksCube[0][colNum][0]; // saving the front left corner based on the front view
+            Cube frontBottom = rubiksCube[size-1][colNum][0]; // saving the front right corner based on the front view
+            Cube backTop = rubiksCube[0][colNum][size-1]; // saving the back left corner based on the front view
+            Cube backBottom = rubiksCube[size-1][colNum][size-1]; // saving the back right corner based on the front view
 
+            /* changing position && changing sides */
+            // corners
+            rubiksCube[0][colNum][0] = backTop;
+            rubiksCube[size-1][colNum][0] = frontTop;
+            rubiksCube[0][colNum][size-1] = backBottom;
+            rubiksCube[size-1][colNum][size-1] = frontBottom;
+            // other than corners
+            int index; // of the arrays (cubes other than corners)
+            // frontCubes (top to bottom)
+            index = 0;
+            for (int destination = 1; destination < size - 1; destination++) // front to back of bottom side
+            {
+                rubiksCube[size-1][colNum][destination] = frontCubes[index];
+                index++;
+            }
+            // backCubes (top to bottom)
+            index = 0;
+            for (int destination = 1; destination < size - 1; destination++) // front to back of top side
+            {
+                rubiksCube[0][colNum][destination] = backCubes[index];
+                index++;
+            }
+            // topCubes (front to back)
+            index = 0;
+            for (int destination = size - 2; destination >= 1; destination--) // bottom to top of front side
+            {
+                rubiksCube[destination][colNum][0] = topCubes[index];
+                index++;
+            }
+            // bottomCubes (front to back)
+            index = 0;
+            for (int destination = size - 2; destination >= 1; destination--) // bottom to top of back side
+            {
+                rubiksCube[destination][colNum][size-1] = bottomCubes[index];
+                index++;
+            }
+
+            /* side adjustments (left and right side not impact) */
+            Cube[] corners = {frontTop, frontBottom, backTop, backBottom};
+            Cube[][] otherThanCorners = {frontCubes, backCubes, topCubes, bottomCubes};
+            for (int i = 0; i < 4; i++)
+            {
+                /* for corners */
+                Cube cube = corners[i];
+                // store sides as temps
+                Side front = cube.getFront();
+                Side back = cube.getBack();
+                Side top = cube.getTop();
+                Side bottom = cube.getBottom();
+                // change
+                cube.setFront(top);
+                cube.setBottom(front);
+                cube.setBack(bottom);
+                cube.setTop(back);
+
+                /* for cubes other than corners */
+                for (int c = 0; c < otherThanCorners[i].length; c++)
+                {
+                    cube = otherThanCorners[i][c];
+                    // store sides as temps
+                    front = cube.getFront();
+                    back = cube.getBack();
+                    top = cube.getTop();
+                    bottom = cube.getBottom();
+                    // change
+                    cube.setFront(top);
+                    cube.setBottom(front);
+                    cube.setBack(bottom);
+                    cube.setTop(back);
+                }
+            }
+            updateAllViews();
+        }
     }
+    // this method rotates the perspective downward
+    public void rotatePerspectiveDownward()
+    {
+        for (int c = 0; c < size; c++)
+        {
+            colRotationDown(c);
+        }
+    }
+
+
     public void faceRotationClockwise()
     {
 

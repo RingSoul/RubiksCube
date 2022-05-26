@@ -1,0 +1,147 @@
+program purpose:
+- a game
+- interacting with a Rubik's Cube (n x n x n, where n = number of cubes per side) based on a two-dimensional (rotatable) perspective
+- array manipulation
+- data saving = record the user's past game(s) and best performance(s)
+- possible web API: let users research the hash code for any emoji or stuff that they want to replace the colored blocks with
+
+
+
+***Each class has exactly one constructor???
+
+public class Side
+- a side has a color, unless it is not visible (i.e. between the connection of two cubes, two sides will become not visible)
+- colors include: yellow, red, green, blue, orange --> purple (cannot find orange), white
+    - yellow = \u001b[33m
+    - red = \u001b[31m
+    - green = \u001b[32m
+    - blue = \u001b[34m
+    - purple = \u001b[35m
+    - white = \u001b[37m
+    - reset = \u001b[0m
+    *** source: https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+    *** alternative is to use the emoji in Tester.java directly
+- can allow the user to change the colored blocks into other things they like? (API)
+instance variables:
+- private boolean isVisible
+- private String representation
+methods:
+- accessor methods
+- mutator methods
+
+
+
+public class TextFormat
+- contains all the ANSI escape sequences of text formats that I need to use
+instance variables:
+- private static final YELLOW = \u001b[33m
+- private static final RED = \u001b[31m
+- private static final GREEN = \u001b[32m
+- private static final BLUE = \u001b[34m
+- private static final PURPLE = \u001b[35m
+- private static final WHITE = \u001b[37m
+- private static final RESET = \u001b[0m
+*** source: https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+methods:
+- static accessor methods
+
+
+
+public class Cube
+- a cube has 6 sides, but can only have 0/1/2/3 visible sides
+- each side of a cube has a token or representation (randomly generated)
+instance variables:
+- private int visibleSides
+- private Side front // the front view is always the one that is shown based on the 2D perspective
+- private Side left // all other orientations are based on the so-called front view
+- private Side right
+- private Side top
+- private Side bottom
+- private Side back
+- private Side[] sides
+methods:
+- accessor methods
+- mutator methods
+- public void setCorrespondingVisibility(int r, int c, int x, int size) --> make different sides visible or not, based on its location in the Rubik's Cube
+- public void isNotRepeated(String check) --> return true if the token as the argument is not found on other side(s) of the cube, false if it is found
+
+
+
+public class RubiksCube
+- a Rubik's Cube has six sides, each can have >= 4 color blocks (i.e. n >= 2 when the entire Rubik's Cube has a size of n * n * n number of Cube objects)
+- it is associated with a player
+instance variables:
+- private Cube[][][] cubes
+- private int size (n) (can initialize the cubes array with "new Cube[size][size][size]")
+- private Player player
+- private Side[][] front
+- private Side[][] back
+- private Side[][] left
+- private Side[][] right
+- private Side[][] top
+- private Side[][] bottom
+when constructing...
+- use setCorrespondingVisibility method and isNotRepeated method in Cube class
+methods:
+- accessor methods
+- mutator methods
+- private void createRubiksCube() --> creates a Rubik's Cube
+- private boolean isLegal() --> helps to create the Rubik's Cube;
+                                true if the illegal grouping in the Player class is not violated (desired), false if the illegal grouping is violated (not desired)
+- private Side[][] createFrontView() --> returns the front view of the cube (i.e. the view presented to the user)
+- private Side[][] createBackView() --> returns the back view of the cube
+- private Side[][] createTopView() --> returns the top view of the cube
+- private Side[][] createBottomView() --> returns the bottom view of the cube
+- private Side[][] createLeftView() --> returns the left view of the cube
+- private Side[][] createRightView() --> returns the right view of the cube
+- private boolean checkIfWin() --> returns true if the game is won, false if not won yet
+
+
+
+public class Player
+- has a ArrayList object (import) that contains Record objects
+- stores information about a user
+- stores their preferred tokens
+instance variables:
+- private ArrayList<Record> records
+- private String userName
+- private String password *************
+- private String[] tokens
+- private String[][] illegalGrouping; // intended to avoid infinite loop during Rubik's Cube creation, as well as preventing not-win-able game
+
+methods:
+- accessor methods // everything besides password
+- mutator methods // everything besides password, records and colors
+-
+
+
+
+public class Record
+- a Record object = a record of one game played by the user, storing info such as number of actions
+instance variables:
+- private String userName
+- private int actionCount // not including change in perspective
+methods:
+- accessor methods
+- mutator methods
+
+
+
+public class DataManager
+- manipulates all the data and all the classes
+instance variables:
+-
+methods:
+-
+
+
+
+public class Tester
+
+
+
+
+***public class GamePlay
+
+
+

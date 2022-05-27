@@ -1,5 +1,6 @@
 public class Tester {
     public static void main(String[] args) {
+        /*
         Player player = new Player("RingSoul");
         RubiksCube rc = new RubiksCube(4, player); // rotated already
 
@@ -16,5 +17,8 @@ public class Tester {
             rc.displayFrontView();
             System.out.println("------------------------------------------------");
         }
+
+         */
+        GamePlayManager gpm = new GamePlayManager();
     }
 }

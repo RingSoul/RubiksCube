@@ -5,6 +5,7 @@ public class Player {
     private String userName;
     private ArrayList<Record> records;
     private String[] tokens;
+    private int gameCount;
 
     // final variables
     // default set of colors as tokens for the sides of the cubes
@@ -42,7 +43,11 @@ public class Player {
     public String[] getTokens() {
         return tokens;
     }
-    // mutator methods (everything besides records and colors)
+    public int getGameCount()
+    {
+        return gameCount;
+    }
+    // mutator methods (everything besides records and colors and gameCount)
     public void setUserName(String newName)
     {
         userName = newName;
@@ -51,4 +56,10 @@ public class Player {
     {
         tokens = newTokens;
     }
+
+    public void incrementGameCount()
+    {
+        gameCount++;
+    }
+
 }

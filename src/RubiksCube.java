@@ -19,12 +19,7 @@ public class RubiksCube {
         this.size = size;
         this.player = player;
         createRubiksCube(size);
-        updateFrontView();
-        updateBackView();
-        updateBottomView();
-        updateTopView();
-        updateLeftView();
-        updateRightView();
+        updateAllViews();
     }
 
     /* Methods */
@@ -52,7 +47,6 @@ public class RubiksCube {
     public Side[][] getRightView() {
         return rightView;
     }
-    // mutator methods
 
     // this method creates the Rubik's Cube, with all tokens assigned
     private void createRubiksCube(int size)
@@ -96,7 +90,7 @@ public class RubiksCube {
 
 
     // this method resets the rubik's cube into a solved one
-    public void resetRubiksCube()
+    private void resetRubiksCube()
     {
         if (rubiksCube != null)
         {
@@ -124,7 +118,6 @@ public class RubiksCube {
                     for (int z = 0; z < size; z++)
                     {
                         Cube cube = new Cube();
-                        cube.setCorrespondingVisibility(r, c, z, size);
                         if (r == 0)
                         {
                             cube.getTop().setRepresentation(topToken);
@@ -180,16 +173,15 @@ public class RubiksCube {
     // this method displays the front view to the user through print statements
     public void displayFrontView()
     {
-        updateFrontView();
-        for (int r = 0; r < size; r++)
+        if (frontView != null)
         {
-            for (int c = 0; c < size; c++)
-            {
-                System.out.print(frontView[r][c].getRepresentation() + "  ");
+            for (int r = 0; r < size; r++) {
+                for (int c = 0; c < size; c++) {
+                    System.out.print(frontView[r][c].getRepresentation() + "  ");
+                }
+                System.out.println();
             }
-            System.out.println();
         }
-        System.out.print(Player.RESET);
     }
 
 
@@ -215,22 +207,78 @@ public class RubiksCube {
     // this method returns the top view of the Rubik's Cube
     private void updateTopView()
     {
-
+        if (rubiksCube != null)
+        {
+            if (topView == null)
+            {
+                topView = new Side[size][size];
+            }
+            for (int c = 0; c < size; c++) // column of rubik's cube
+            {
+                for (int z = 0; z < size; z++) // 3rd dimension of rubik's cube
+                {
+                    Cube current = rubiksCube[0][c][z];
+                    topView[c][z] = current.getTop();
+                }
+            }
+        }
     }
     // this method updates the bottom view of the Rubik's Cube
     private void updateBottomView()
     {
-
+        if (rubiksCube != null)
+        {
+            if (bottomView == null)
+            {
+                bottomView = new Side[size][size];
+            }
+            for (int c = 0; c < size; c++) // column of rubik's cube
+            {
+                for (int z = 0; z < size; z++) // 3rd dimension of rubik's cube
+                {
+                    Cube current = rubiksCube[size-1][c][z];
+                    bottomView[c][z] = current.getBottom();
+                }
+            }
+        }
     }
     // this method updates left view of the rubik's Cube
     private void updateLeftView()
     {
-
+        if (rubiksCube != null)
+        {
+            if (leftView == null)
+            {
+                leftView = new Side[size][size];
+            }
+            for (int r = 0; r < size; r++) // row of rubik's cube
+            {
+                for (int z = 0; z < size; z++) // 3rd dimension of rubik's cube
+                {
+                    Cube current = rubiksCube[r][0][z];
+                    leftView[r][z] = current.getLeft();
+                }
+            }
+        }
     }
     // this method updates the right view of the rubik's cube
     private void updateRightView()
     {
-
+        if (rubiksCube != null)
+        {
+            if (rightView == null)
+            {
+                rightView = new Side[size][size];
+            }
+            for (int r = 0; r < size; r++) // row of rubik's cube
+            {
+                for (int z = 0; z < size; z++) // 3rd dimension of rubik's cube
+                {
+                    Cube current = rubiksCube[r][size-1][z];
+                    rightView[r][z] = current.getRight();
+                }
+            }
+        }
     }
 
     // this method updates all views
@@ -250,24 +298,37 @@ public class RubiksCube {
     // i.e. if for all the 6 sides, each has exactly n * n same tokens (when n = size of cube)
     public boolean checkIfWon()
     {
-        // front check
-        String frontCheck = frontView[0][0].getRepresentation();
+        Side[][][] allSixSides = {frontView, backView, topView, bottomView, leftView, rightView};
+        for (int i = 0; i < allSixSides.length; i++)
+        {
+            boolean areAllTheSame = checkOneSideForVictory(allSixSides[i]);
+            if (areAllTheSame == false)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // precondition: oneSide is not null
+    // precondition: oneSide is always one of the instance variables with matching data type
+    public boolean checkOneSideForVictory(Side[][] oneSide)
+    {
+        String first = oneSide[0][0].getRepresentation();
         for (int r = 0; r < size; r++)
         {
             for (int c = 0; c < size; c++)
             {
                 if (r != 0 && c != 0)
                 {
-                    String check = frontView[r][c].getRepresentation();
-                    if (!check.equals(frontCheck))
+                    String check = oneSide[r][c].getRepresentation();
+                    if (!check.equals(first))
                     {
                         return false;
                     }
                 }
             }
         }
-        // back check
-
         return true;
     }
 
@@ -374,7 +435,7 @@ public class RubiksCube {
         }
     }
     // this method rotates the perspective leftward
-    public void changePerspectiveLeftward()
+    public void rotatePerspectiveLeftward()
     {
         for (int r = 0; r < size; r++)
         {
@@ -485,7 +546,7 @@ public class RubiksCube {
         }
     }
     // this method rotates the perspective rightward
-    public void changePerspectiveRightward()
+    public void rotatePerspectiveRightward()
     {
         for (int r = 0; r < size; r++)
         {
@@ -601,6 +662,7 @@ public class RubiksCube {
         {
             colRotationUp(c);
         }
+        updateAllViews();
     }
 
 
@@ -711,6 +773,7 @@ public class RubiksCube {
         {
             colRotationDown(c);
         }
+        updateAllViews();
     }
 
 

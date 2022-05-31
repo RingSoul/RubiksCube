@@ -1,17 +1,22 @@
 public class Record {
     // instance variables
-    private String userName;
+    private int rubiksCubeSize;
     private int actionCount;
 
     // constructor(s)
-    public Record(String userName, int actionCount)
+    public Record(int rubiksCubeSize)
     {
-        this.userName = userName;
-        this.actionCount = actionCount;
+        this.rubiksCubeSize = rubiksCubeSize;
+        actionCount = 0;
     }
 
     /* methods */
     // accessor methods
-    public String getUserName() { return userName; }
+    public int getRubiksCubeSize() { return rubiksCubeSize; }
     public int getActionCount() { return actionCount; }
+
+    public void incrementActionCount()
+    {
+        actionCount++;
+    }
 }

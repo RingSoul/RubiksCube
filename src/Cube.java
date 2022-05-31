@@ -19,12 +19,12 @@ public class Cube {
         // initialize all sides into not visible (will be changed by the setCorrespondingVisibility method)
         // and without representations or tokens (will be randomly assigned the assignTokens method of RubiksCube class)
         visibleSides = 0;
-        front = new Side(false, "");
-        left = new Side(false, "");
-        right = new Side(false, "");
-        top = new Side(false, "");
-        bottom = new Side(false, "");
-        back = new Side(false, "");
+        front = new Side("");
+        left = new Side("");
+        right = new Side("");
+        top = new Side("");
+        bottom = new Side("");
+        back = new Side("");
         sides = new Side[]{front, left, right, top, bottom, back};
     }
 
@@ -72,44 +72,5 @@ public class Cube {
     }
     public void setTop(Side top) {
         this.top = top;
-    }
-
-    // set the visibility of the block to true based on its position in the Rubik's Cube
-    // first row and last row --> top and bottom
-    // first column and last column --> left and right
-    // z = 0 and z = size - 1 --> front and back
-    // size will be always be the instance variable "size" in the RubiksCube class
-    public void setCorrespondingVisibility(int r, int c, int z, int size)
-    {
-        if (r == 0)
-        {
-            top.setVisible(true);
-            visibleSides++;
-        }
-        if (r == size - 1)
-        {
-            bottom.setVisible(true);
-            visibleSides++;
-        }
-        if (c == 0)
-        {
-            left.setVisible(true);
-            visibleSides++;
-        }
-        if (c == size - 1)
-        {
-            right.setVisible(true);
-            visibleSides++;
-        }
-        if (z == 0)
-        {
-            front.setVisible(true);
-            visibleSides++;
-        }
-        if (z == size - 1)
-        {
-            back.setVisible(true);
-            visibleSides++;
-        }
     }
 }

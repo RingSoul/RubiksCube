@@ -9,8 +9,8 @@ program purpose:
 
 
 public class Side
-- a side has a color, unless it is not visible (i.e. between the connection of two cubes, two sides will become not visible)
-- colors include: yellow, red, green, blue, orange --> purple (cannot find orange), white
+- a side has a color / token
+- colors include: yellow, red, green, blue, orange --> purple (cannot find orange ANSI code), white
     - yellow = \u001b[33m
     - red = \u001b[31m
     - green = \u001b[32m
@@ -22,7 +22,6 @@ public class Side
     *** alternative is to use the emoji in Tester.java directly
 - can allow the user to change the colored blocks into other things they like? (API)
 instance variables:
-- private boolean isVisible
 - private String representation
 methods:
 - accessor methods
@@ -35,7 +34,6 @@ public class Cube
 - a cube has 6 sides, but can only have 0/1/2/3 visible sides
 - each side of a cube has a token or representation (unless not visible)
 instance variables:
-- private int visibleSides
 - private Side front // the front view is always the one that is shown based on the 2D perspective
 - private Side left // all other orientations are based on the so-called front view
 - private Side right

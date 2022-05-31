@@ -129,10 +129,6 @@ public class GamePlayManager {
             System.out.println("4. Downward");
             System.out.print("Type your command (1/2/3/4): ");
             String command = inputReader.nextLine();
-            if (command.equals("1") || command.equals("2") || command.equals("3") || command.equals("4"))
-            {
-                record.incrementActionCount();
-            }
             switch (command) {
                 case "1" -> rubiksCube.rotatePerspectiveLeftward();
                 case "2" -> rubiksCube.rotatePerspectiveRightward();
@@ -198,10 +194,6 @@ public class GamePlayManager {
                     System.out.println("\u001b[31m" + "Nice try, but invalid." + "\u001b[0m");
                 }
             }
-        }
-        else if (choice.equals("4"))
-        {
-
         }
         else
         {

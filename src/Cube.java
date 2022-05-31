@@ -2,8 +2,7 @@ import java.util.ArrayList;
 
 public class Cube {
     /* instance variables */
-    private int visibleSides;
-    // all side will be constantly be changing when actions are taken
+    // all side will be constantly changing when actions are taken
     private Side front; // the front side is always the one that is presented to the user (with the 2D perspective)
     // all other sides or orientations are based on the front view
     private Side left;
@@ -18,7 +17,6 @@ public class Cube {
     {
         // initialize all sides into not visible (will be changed by the setCorrespondingVisibility method)
         // and without representations or tokens (will be randomly assigned the assignTokens method of RubiksCube class)
-        visibleSides = 0;
         front = new Side("");
         left = new Side("");
         right = new Side("");
@@ -30,9 +28,6 @@ public class Cube {
 
     /* methods */
     // accessor methods
-    public int getVisibleSides() {
-        return visibleSides;
-    }
     public Side getTop() {
         return top;
     }

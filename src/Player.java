@@ -24,11 +24,15 @@ public class Player {
     private static final String RESET = "\u001b[0m";
 
     // constructor
-    public Player(String userName, int gameCount)
+    public Player(String userName, int gameCount, String data)
     {
         this.userName = userName;
         records = new ArrayList<Record>();
         this.gameCount = gameCount; // 0 if new player
+        if (gameCount > 0)
+        {
+            restoreRecord(data);
+        }
     }
 
     /* Methods */
@@ -56,6 +60,29 @@ public class Player {
     public void incrementGameCount()
     {
         gameCount++;
+    }
+
+    private void restoreRecord(String data)
+    {
+        String[] infos = data.split("\\|");
+        for (String info : infos)
+        {
+            if (info.indexOf("game") != -1)
+            {
+                String[] piecesOfInfo = info.split("/"); // 1 = size, 2 = action count, 3 = solved or not solved
+                int indexOfColon = piecesOfInfo[1].indexOf(":");
+                String sizeAsStr = piecesOfInfo[1].substring(indexOfColon + 1);
+                int sizeAsInt = Integer.parseInt(sizeAsStr);
+                indexOfColon = piecesOfInfo[2].indexOf(":");
+                String actionCountAsStr = piecesOfInfo[2].substring(indexOfColon + 1);
+                int actionCountAsInt = Integer.parseInt(actionCountAsStr);
+                indexOfColon = piecesOfInfo[3].indexOf(":");
+                String solvedOrNot = piecesOfInfo[3].substring(indexOfColon + 1);
+                boolean isSolved = Boolean.parseBoolean(solvedOrNot);
+                Record oldRecord = new Record(sizeAsInt, actionCountAsInt, isSolved);
+                records.add(oldRecord);
+            }
+        }
     }
 
 }

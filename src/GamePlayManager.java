@@ -44,10 +44,10 @@ public class GamePlayManager {
             {
                 break;
             }
-            processChoice(input, record);
+            processChoiceAndUpdateRecord(input, record);
             isWon = rubiksCube.checkIfWon();
         }
-        endGame(record);
+        endGameAndSaveData(record);
     }
 
     private void initiatePlayer()
@@ -86,14 +86,15 @@ public class GamePlayManager {
             if (alreadyExist)
             {
                 System.out.println("Welcome back, " + userName + ".");
-                player = new Player(userName, gameCount);
                 data += copy;
+                player = new Player(userName, gameCount, data);
+                presentOptionsForReturningPlayers();
             }
             else
             {
                 System.out.println("Your account seems new to me, hi.");
-                player = new Player(userName, 0);
                 data += "userName:" + userName + "|";
+                player = new Player(userName, 0, data);
             }
         } catch (IOException e) {
             System.out.println("Error in initiating player.");
@@ -118,15 +119,15 @@ public class GamePlayManager {
         }
     }
 
-    private void processChoice(String choice, Record record)
+    private void processChoiceAndUpdateRecord(String choice, Record record)
     {
         if (choice.equals("1"))
         {
             System.out.println("Indicate the direction you want to move the Rubik's Cube for changing the current front view:");
-            System.out.println("1. Leftward");
-            System.out.println("2. Rightward");
-            System.out.println("3. Upward");
-            System.out.println("4. Downward");
+            System.out.println("1. Leftward --> former right view becomes your front view");
+            System.out.println("2. Rightward --> former left view becomes your front view");
+            System.out.println("3. Upward --> former bottom view becomes your front view");
+            System.out.println("4. Downward --> former top view becomes your front view");
             System.out.print("Type your command (1/2/3/4): ");
             String command = inputReader.nextLine();
             switch (command) {
@@ -201,7 +202,7 @@ public class GamePlayManager {
         }
     }
 
-    private void endGame(Record record)
+    private void endGameAndSaveData(Record record)
     {
         player.getRecords().add(record);
         data += "actionCount:" + record.getActionCount() + "/";
@@ -223,5 +224,14 @@ public class GamePlayManager {
         } catch(IOException e) {
             System.out.println("Error in saving data.");
         }
+    }
+
+    private void presentOptionsForReturningPlayers()
+    {
+        System.out.println("Before playing, what do you want to do?");
+        System.out.println("1. Check out my best record in terms of the least number of actions!");
+        System.out.println("2. Check out the biggest Rubik's Cube I ever tried!");
+        System.out.print("Type your command (1/2): ");
+        String command = inputReader.nextLine();
     }
 }

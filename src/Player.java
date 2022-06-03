@@ -5,23 +5,13 @@ public class Player {
     private String userName;
     private ArrayList<Record> records;
     private int gameCount;
-    private String[] tokens = {YELLOW + "Y" + RESET,
-                               RED + "R" + RESET,
-                               GREEN + "G" + RESET,
-                               BLUE + "B" + RESET,
-                               PURPLE + "P" + RESET,
-                               WHITE + "W" + RESET};
+    private String[] tokens = {TextFormat.YELLOW + "Y" + TextFormat.RESET,
+                               TextFormat.RED + "R" + TextFormat.RESET,
+                               TextFormat.GREEN + "G" + TextFormat.RESET,
+                               TextFormat.BLUE + "B" + TextFormat.RESET,
+                               TextFormat.PURPLE + "P" + TextFormat.RESET,
+                               TextFormat.WHITE + "W" + TextFormat.RESET};
 
-    // final variables
-    // default set of colors as tokens for the sides of the cubes
-    // can be accessed directly
-    private static final String YELLOW = "\u001b[33m";
-    private static final String RED = "\u001b[31m";
-    private static final String GREEN = "\u001b[32m";
-    private static final String BLUE = "\u001b[34m";
-    private static final String PURPLE = "\u001b[35m";
-    private static final String WHITE = "\u001b[37m";
-    private static final String RESET = "\u001b[0m";
 
     // constructor
     public Player(String userName, int gameCount, String data)
@@ -82,6 +72,44 @@ public class Player {
                 Record oldRecord = new Record(sizeAsInt, actionCountAsInt, isSolved);
                 records.add(oldRecord);
             }
+        }
+    }
+
+    public void reportBestRecordByActionCount()
+    {
+        if (records.size() > 0) {
+            Record record = null;
+            int lowestActionCount = Integer.MAX_VALUE;
+            for (int i = 0; i < records.size(); i++) {
+                if (records.get(i).getActionCount() < lowestActionCount && records.get(i).isSolved()) {
+                    record = records.get(i);
+                    lowestActionCount = records.get(i).getActionCount();
+                }
+            }
+            if (record == null)
+            {
+                System.out.println("Ooooops, you have not solved any Rubik's Cube yet...");
+            }
+            else
+            {
+                System.out.print("Your best record is when you solved a " + record.getRubiksCubeSize() + "^3 Rubik's Cube ");
+                System.out.println("in " + record.getActionCount() + " rotations!");
+            }
+        }
+    }
+
+    public void reportLargestSize()
+    {
+        if (records.size() > 0)
+        {
+            int maxSize = records.get(0).getRubiksCubeSize();
+            for (Record r : records) {
+                if (r.getRubiksCubeSize() > maxSize)
+                {
+                    maxSize = r.getRubiksCubeSize();
+                }
+            }
+            System.out.println("The biggest Rubik's Cube you ever tried is " + maxSize + "^3.");
         }
     }
 

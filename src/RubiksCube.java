@@ -30,7 +30,8 @@ public class RubiksCube {
     public int getSize() {
         return size;
     }
-    public Player getPlayer() {
+    public Player getPlayer()
+    {
         return player;
     }
     public Side[][] getFrontView() {

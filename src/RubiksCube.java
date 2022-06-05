@@ -577,10 +577,10 @@ public class RubiksCube {
                 bottomCubes[z] = rubiksCube[size-1][colNum][z+1]; // going to the front side, front to back --> left to right
             }
             // corner cubes
-            Cube frontTop = rubiksCube[0][colNum][0]; // saving the front left corner based on the front view
-            Cube frontBottom = rubiksCube[size-1][colNum][0]; // saving the front right corner based on the front view
-            Cube backTop = rubiksCube[0][colNum][size-1]; // saving the back left corner based on the front view
-            Cube backBottom = rubiksCube[size-1][colNum][size-1]; // saving the back right corner based on the front view
+            Cube frontTop = rubiksCube[0][colNum][0]; // saving the front top corner based on the front view
+            Cube frontBottom = rubiksCube[size-1][colNum][0]; // saving the front bottom corner based on the front view
+            Cube backTop = rubiksCube[0][colNum][size-1]; // saving the back top corner based on the front view
+            Cube backBottom = rubiksCube[size-1][colNum][size-1]; // saving the back bottom corner based on the front view
 
             /* changing position && changing sides */
             // corners
@@ -688,10 +688,10 @@ public class RubiksCube {
                 bottomCubes[z] = rubiksCube[size-1][colNum][z+1]; // going to the front side, front to back --> left to right
             }
             // corner cubes
-            Cube frontTop = rubiksCube[0][colNum][0]; // saving the front left corner based on the front view
-            Cube frontBottom = rubiksCube[size-1][colNum][0]; // saving the front right corner based on the front view
-            Cube backTop = rubiksCube[0][colNum][size-1]; // saving the back left corner based on the front view
-            Cube backBottom = rubiksCube[size-1][colNum][size-1]; // saving the back right corner based on the front view
+            Cube frontTop = rubiksCube[0][colNum][0]; // saving the front top corner based on the front view
+            Cube frontBottom = rubiksCube[size-1][colNum][0]; // saving the front bottom corner based on the front view
+            Cube backTop = rubiksCube[0][colNum][size-1]; // saving the back top corner based on the front view
+            Cube backBottom = rubiksCube[size-1][colNum][size-1]; // saving the back bottom corner based on the front view
 
             /* changing position && changing sides */
             // corners

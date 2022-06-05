@@ -113,4 +113,15 @@ public class Player {
         }
     }
 
+    public void presentAllRecords()
+    {
+        for (int i = 0; i < records.size(); i++)
+        {
+            Record record = records.get(i);
+            System.out.println("Game #" + (i+1));
+            System.out.println(record);
+            System.out.println("------------------------");
+        }
+    }
+
 }

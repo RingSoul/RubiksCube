@@ -35,4 +35,15 @@ public class Record {
     {
         isSolved = true;
     }
+
+    public String toString()
+    {
+        String info = "Size of Rubik's Cube = " + rubiksCubeSize;
+        info += "\nNumber of actions/rotations taken = " + actionCount;
+        if (isSolved)
+            info += "\nThis Rubik's Cube is solved";
+        else
+            info += "\nThis Rubik's Cube is not solved";
+        return info;
+    }
 }

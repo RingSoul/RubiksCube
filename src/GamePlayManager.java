@@ -21,33 +21,37 @@ public class GamePlayManager {
 
     public void playGame()
     {
-        System.out.println();
-        System.out.println("Time to solve a Rubik's Cube~~~");
-        boolean isWon = rubiksCube.checkIfWon();
-        player.incrementGameCount();
-        System.out.println("This is your Game #" + player.getGameCount());
-        data += "game#" + player.getGameCount() + "/size:" + rubiksCube.getSize() + "/";
-        Record record = new Record(rubiksCube.getSize());
-        inputReader.nextLine(); // avoid weird output
-        while(!isWon)
+        if (rubiksCube != null)
         {
-            System.out.println("This is your current front view:");
-            rubiksCube.displayFrontView();
-            System.out.println("Possible Commands:");
-            System.out.println("1. Change Perspective --- DOES NOT contribute to action count");
-            System.out.println("2. Rotate by Row --- contributes to action count");
-            System.out.println("3. Rotate by Column --- contributes to action count");
-            System.out.println("4. Quit the Game\n");
-            System.out.print("Type your command (1/2/3/4): ");
-            String input = inputReader.nextLine();
-            if (input.equals("4"))
-            {
-                break;
+            System.out.println();
+            System.out.println("Time to solve a Rubik's Cube~~~");
+            boolean isWon = rubiksCube.checkIfWon();
+            player.incrementGameCount();
+            System.out.println("This is your Game #" + player.getGameCount());
+            data += "game#" + player.getGameCount() + "/size:" + rubiksCube.getSize() + "/";
+            Record record = new Record(rubiksCube.getSize());
+            while (!isWon) {
+                System.out.println("This is your current front view:");
+                rubiksCube.displayFrontView();
+                System.out.println("Possible Commands:");
+                System.out.println("1. Change Perspective --- DOES NOT contribute to action count");
+                System.out.println("2. Rotate by Row --- contributes to action count");
+                System.out.println("3. Rotate by Column --- contributes to action count");
+                System.out.println("4. Quit the Game\n");
+                System.out.print("Type your command (1/2/3/4): ");
+                String input = inputReader.nextLine();
+                if (input.equals("4")) {
+                    break;
+                }
+                processChoiceAndUpdateRecord(input, record);
+                isWon = rubiksCube.checkIfWon();
             }
-            processChoiceAndUpdateRecord(input, record);
-            isWon = rubiksCube.checkIfWon();
+            endGameAndSaveData(record);
         }
-        endGameAndSaveData(record);
+        else
+        {
+            System.out.println("Something wrong happened =( Game over");
+        }
     }
 
     private void initiatePlayer()
@@ -107,13 +111,13 @@ public class GamePlayManager {
         {
             String sizeAsStr = "";
             int sizeAsInt = 0;
-            while (!(checkSizeAsStr(sizeAsStr) && checkSizeAsInt(sizeAsInt))) {
+            while (!(isNumber(sizeAsStr) && isWithinRange(sizeAsInt, 2, 30))) {
                 System.out.println("Your Rubik's Cube will be \"size * size * size\".");
                 System.out.print("Enter the value for size (2~30): ");
                 sizeAsStr = inputReader.nextLine();
-                if (checkSizeAsStr(sizeAsStr) == true) {
+                if (isNumber(sizeAsStr) == true) {
                     sizeAsInt = Integer.parseInt(sizeAsStr);
-                    if (checkSizeAsInt(sizeAsInt) == true)
+                    if (isWithinRange(sizeAsInt, 2, 30) == true)
                     {
                         rubiksCube = new RubiksCube(sizeAsInt, player);
                     }
@@ -152,60 +156,76 @@ public class GamePlayManager {
         }
         else if (choice.equals("2"))
         {
-            System.out.print("(Enter a number between 1 and " + rubiksCube.getSize() + ") You want to rotate Row #");
-            int rowNum = inputReader.nextInt(); // minus 1 later
-            if (rowNum > rubiksCube.getSize() && rowNum < 1)
-            {
-                System.out.println(TextFormat.RED + "Invalid row number. See you later." + TextFormat.RESET);
-            }
-            else
-            {
-                inputReader.nextLine();
-                System.out.print("(L)eftward or (R)ightward? ");
-                String direction = inputReader.nextLine();
-                if (direction.toUpperCase().equals("L"))
+            String rowNumAsStr = "";
+            int rowNum = 0;
+            while (!isWithinRange(rowNum, 1, rubiksCube.getSize())) {
+                System.out.print("(Enter a number between 1 and " + rubiksCube.getSize() + ") You want to rotate Row #");
+                rowNumAsStr = inputReader.nextLine(); // minus 1 later
+                if (isNumber(rowNumAsStr))
                 {
-                    rubiksCube.rowRotationLeft(rowNum - 1);
-                    record.incrementActionCount();
-                }
-                else if (direction.toUpperCase().equals("R"))
-                {
-                    rubiksCube.rowRotationRight(rowNum - 1);
-                    record.incrementActionCount();
+                    rowNum = Integer.parseInt(rowNumAsStr);
+                    if (!isWithinRange(rowNum, 1, rubiksCube.getSize()))
+                    {
+                        System.out.println(TextFormat.RED + "Not within the indicated range." + TextFormat.RESET);
+                    }
                 }
                 else
                 {
-                    System.out.println(TextFormat.RED + "Nice try, but invalid." + TextFormat.RESET);
+                    System.out.println(TextFormat.RED + "Type a number please =(" + TextFormat.RESET);
                 }
+            }
+            System.out.print("(L)eftward or (R)ightward? ");
+            String direction = inputReader.nextLine();
+            if (direction.toUpperCase().equals("L"))
+            {
+                rubiksCube.rowRotationLeft(rowNum - 1);
+                record.incrementActionCount();
+            }
+            else if (direction.toUpperCase().equals("R"))
+            {
+                rubiksCube.rowRotationRight(rowNum - 1);
+                record.incrementActionCount();
+            }
+            else
+            {
+                System.out.println(TextFormat.RED + "Nice try, but invalid, now we start over =(" + TextFormat.RESET);
             }
         }
         else if (choice.equals("3"))
         {
-            System.out.print("(Enter a number between 1 and " + rubiksCube.getSize() + ") You want to rotate Column #");
-            int colNum = inputReader.nextInt(); // minus 1 later
-            if (colNum > rubiksCube.getSize() && colNum < 1)
-            {
-                System.out.println(TextFormat.RED + "Invalid column number. See you later." + TextFormat.RESET);
-            }
-            else
-            {
-                inputReader.nextLine();
-                System.out.print("(U)pward or (D)ownward? ");
-                String direction = inputReader.nextLine();
-                if (direction.toUpperCase().equals("U"))
+            String colNumAsStr = "";
+            int colNum = 0;
+            while (!isWithinRange(colNum, 1, rubiksCube.getSize())) {
+                System.out.print("(Enter a number between 1 and " + rubiksCube.getSize() + ") You want to rotate Column #");
+                colNumAsStr = inputReader.nextLine(); // minus 1 later
+                if (isNumber(colNumAsStr))
                 {
-                    rubiksCube.colRotationUp(colNum - 1);
-                    record.incrementActionCount();
-                }
-                else if (direction.toUpperCase().equals("D"))
-                {
-                    rubiksCube.colRotationDown(colNum - 1);
-                    record.incrementActionCount();
+                    colNum = Integer.parseInt(colNumAsStr);
+                    if (!isWithinRange(colNum, 1, rubiksCube.getSize()))
+                    {
+                        System.out.println(TextFormat.RED + "Not within the indicated range." + TextFormat.RESET);
+                    }
                 }
                 else
                 {
-                    System.out.println(TextFormat.RED + "Nice try, but invalid." + TextFormat.RESET);
+                    System.out.println(TextFormat.RED + "Type a number please =(" + TextFormat.RESET);
                 }
+            }
+            System.out.print("(U)pward or (D)ownward? ");
+            String direction = inputReader.nextLine();
+            if (direction.toUpperCase().equals("U"))
+            {
+                rubiksCube.colRotationUp(colNum - 1);
+                record.incrementActionCount();
+            }
+            else if (direction.toUpperCase().equals("D"))
+            {
+                rubiksCube.colRotationDown(colNum - 1);
+                record.incrementActionCount();
+            }
+            else
+            {
+                System.out.println(TextFormat.RED + "Nice try, but invalid, now we start over =(" + TextFormat.RESET);
             }
         }
         else
@@ -217,17 +237,18 @@ public class GamePlayManager {
     // end the game and save the data into the file
     private void endGameAndSaveData(Record record)
     {
-        player.getRecords().add(record);
         data += "actionCount:" + record.getActionCount() + "/";
         data += "solved:" + rubiksCube.checkIfWon() + "|";
         if (rubiksCube.checkIfWon())
         {
             System.out.println(TextFormat.GREEN + "Congratulation, you solved a Rubik's Cube with a size of " + rubiksCube.getSize() + "!" + TextFormat.RESET);
+            record.changeToSolved();
         }
         else
         {
             System.out.println(TextFormat.BLUE + "Unfortunately, you failed to solve this Rubik's Cube..." + TextFormat.RESET);
         }
+        player.getRecords().add(record);
         // writing into file
         try {
             FileWriter fileWriter = new FileWriter(file);
@@ -246,8 +267,10 @@ public class GamePlayManager {
             System.out.println("Before playing, what do you want to do?");
             System.out.println("1. Check out my best record in terms of the least number of actions!");
             System.out.println("2. Check out the biggest Rubik's Cube I ever tried!");
-            System.out.print("Type your command (1/2): ");
+            System.out.println("3. See all my record(s)!");
+            System.out.print("Type your command (1/2/3): ");
             String command = inputReader.nextLine();
+            System.out.println();
             if (command.equals("1"))
             {
                 player.reportBestRecordByActionCount();
@@ -256,26 +279,31 @@ public class GamePlayManager {
             {
                 player.reportLargestSize();
             }
+            else if (command.equals("3"))
+            {
+                player.presentAllRecords();
+            }
             else
             {
                 System.out.println(TextFormat.GREEN + "Seems like you don't want to check your record, let's get to the game, namely torment." + TextFormat.RESET);
             }
+            System.out.println();
         }
     }
 
 
     // input checker methods
-    private boolean checkSizeAsStr(String sizeAsStr)
+    private boolean isNumber(String str)
     {
-        if (sizeAsStr.equals(""))
+        if (str.equals(""))
         {
             return false;
         }
         String[] nums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        for (int i = 0; i < sizeAsStr.length(); i++) // for every "digit" in sizeAsStr
+        for (int i = 0; i < str.length(); i++) // for every "digit" in sizeAsStr
         {
             boolean isValidDigit = false;
-            String current = sizeAsStr.substring(i, i + 1);
+            String current = str.substring(i, i + 1);
             for (String num : nums) // for every num in nums
             {
                 if (current.equals(num))
@@ -292,9 +320,9 @@ public class GamePlayManager {
         return true;
     }
 
-    private boolean checkSizeAsInt(int sizeAsInt)
+    private boolean isWithinRange(int input, int lowerBound, int upperBound)
     {
-        if (sizeAsInt > 1 && sizeAsInt <= 30)
+        if (input >= lowerBound && input <= upperBound)
         {
             return true;
         }

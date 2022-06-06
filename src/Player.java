@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Player {
     // instance variables
-    private String userName;
+    private String username;
     private ArrayList<Record> records;
     private int gameCount;
     private String[] tokens = {TextFormat.YELLOW + "Y" + TextFormat.RESET,
@@ -14,9 +14,9 @@ public class Player {
 
 
     // constructor
-    public Player(String userName, int gameCount, String data)
+    public Player(String username, int gameCount, String data)
     {
-        this.userName = userName;
+        this.username = username;
         records = new ArrayList<Record>();
         this.gameCount = gameCount; // 0 if new player
         if (gameCount > 0)
@@ -27,8 +27,8 @@ public class Player {
 
     /* Methods */
     // accessor methods (everything besides colors)
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
     public ArrayList<Record> getRecords() {
         return records;
@@ -38,9 +38,9 @@ public class Player {
     }
     public int getGameCount() { return gameCount; }
     // mutator methods (everything besides records and colors and gameCount)
-    public void setUserName(String newName)
+    public void setUsername(String newName)
     {
-        userName = newName;
+        username = newName;
     }
     public void setTokens(String[] newTokens)
     {
@@ -77,24 +77,24 @@ public class Player {
 
     public void reportBestRecordByActionCount()
     {
-        if (records.size() > 0) {
-            Record record = null;
-            int lowestActionCount = Integer.MAX_VALUE;
-            for (int i = 0; i < records.size(); i++) {
-                if (records.get(i).getActionCount() < lowestActionCount && records.get(i).isSolved()) {
-                    record = records.get(i);
-                    lowestActionCount = records.get(i).getActionCount();
-                }
-            }
-            if (record == null)
+        Record bestGame = null;
+        int lowestActionCount = Integer.MAX_VALUE;
+        for (Record record : records)
+        {
+            if (record.isSolved() && record.getActionCount() < lowestActionCount)
             {
-                System.out.println("Ooooops, you have not solved any Rubik's Cube yet...");
+                bestGame = record;
+                lowestActionCount = record.getActionCount();
             }
-            else
-            {
-                System.out.print("Your best record is when you solved a " + record.getRubiksCubeSize() + "^3 Rubik's Cube ");
-                System.out.println("in " + record.getActionCount() + " rotations!");
-            }
+        }
+        if (bestGame == null)
+        {
+            System.out.println("Ooooops, you have not solved any Rubik's Cube yet...");
+        }
+        else
+        {
+            System.out.print("Your best record is when you solved a " + bestGame.getRubiksCubeSize() + "^3 Rubik's Cube ");
+            System.out.println("in " + bestGame.getActionCount() + " rotations!");
         }
     }
 

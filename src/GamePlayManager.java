@@ -57,10 +57,10 @@ public class GamePlayManager {
     private void initiatePlayer()
     {
         System.out.print("Enter your name: ");
-        String userName = inputReader.nextLine();
+        String username = inputReader.nextLine();
         try {
             // creating, if applicable
-            file = new File("src/" + userName + ".data");
+            file = new File("src/" + username + ".data");
             file.createNewFile();
             // reading
             int gameCount = 0;
@@ -70,7 +70,7 @@ public class GamePlayManager {
             while (fileReader.hasNextLine())
             {
                 String line = fileReader.nextLine();
-                if (line.indexOf(userName) != -1)
+                if (line.indexOf(username) != -1)
                 {
                     copy = line;
                     alreadyExist = true;
@@ -89,16 +89,16 @@ public class GamePlayManager {
             fileReader.close();
             if (alreadyExist)
             {
-                System.out.println("Welcome back, " + userName + ".");
+                System.out.println("Welcome back, " + username + ".");
                 data += copy;
-                player = new Player(userName, gameCount, data);
+                player = new Player(username, gameCount, data);
                 presentOptionsForReturningPlayers();
             }
             else
             {
                 System.out.println("Your account seems new to me, hi.");
-                data += "userName:" + userName + "|";
-                player = new Player(userName, 0, data);
+                data += "username:" + username + "|";
+                player = new Player(username, 0, data);
             }
         } catch (IOException e) {
             System.out.println("Error in initiating player.");
@@ -265,7 +265,7 @@ public class GamePlayManager {
     {
         if (player != null) {
             System.out.println("Before playing, what do you want to do?");
-            System.out.println("1. Check out my best record in terms of the least number of actions!");
+            System.out.println("1. Check out my best record in terms of least number of actions!");
             System.out.println("2. Check out the biggest Rubik's Cube I ever tried!");
             System.out.println("3. See all my record(s)!");
             System.out.print("Type your command (1/2/3): ");

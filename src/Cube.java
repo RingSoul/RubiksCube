@@ -49,7 +49,7 @@ public class Cube {
     public Side[] getSides() {
         return sides;
     }
-    // mutator methods (besides "sides" and "visibleSides")
+    // mutator methods (besides "sides" array)
     public void setBack(Side back) {
         this.back = back;
     }

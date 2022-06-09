@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Cube {
     /* instance variables */
     // all side will be constantly changing when actions are taken

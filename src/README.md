@@ -141,12 +141,20 @@
 - private void constructRubiksCube()
   - initializes the rubiksCube by asking for size
   - used in the constructor
-- private void processChoice(String choice, Record record) 
+- private void processChoiceAndUpdateRecord(String choice, Record record) 
   - process the user input and perform corresponding action
   - if the action is performed, the actionCount in record is incremented
-- private void endGame(Record record)
+- private void endGameAndSaveData(Record record)
   - end the game
   - store all info about this round of game into the file, based on the record
+- private void presentOptionsForReturningPlayer()
+  - prints available options for returning player
+  - based on their input, calls a method in the Player class or move on to the game
+- private void isNumber(String str)
+  - check if a String object can be parsed into an int literal without error
+  - if it can, return true; false if it cannot
+- private void isWithinRange(int input, int lowerBound, int upperBound)
+  - if input is a number between lowerBound and upperBound (inclusive of both), return true; false otherwise
 
 
 

@@ -89,12 +89,12 @@ public class Player {
         }
         if (bestGame == null)
         {
-            System.out.println("Ooooops, you have not solved any Rubik's Cube yet...");
+            System.out.println("啊哦，你还未解开过任何一个魔方呢……");
         }
         else
         {
-            System.out.print("Your best record is when you solved a " + bestGame.getRubiksCubeSize() + "^3 Rubik's Cube ");
-            System.out.println("in " + bestGame.getActionCount() + " rotations!");
+            System.out.print("你的最佳记录是当你解开了一个尺寸为" + bestGame.getRubiksCubeSize() + "^3的魔方，");
+            System.out.println("总计旋转了" + bestGame.getActionCount() + "次。");
         }
     }
 
@@ -109,7 +109,7 @@ public class Player {
                     maxSize = r.getRubiksCubeSize();
                 }
             }
-            System.out.println("The biggest Rubik's Cube you ever tried is " + maxSize + "^3.");
+            System.out.println("你试过的最大的魔方尺寸为" + maxSize + "^3。");
         }
     }
 
@@ -118,7 +118,7 @@ public class Player {
         for (int i = 0; i < records.size(); i++)
         {
             Record record = records.get(i);
-            System.out.println("Game #" + (i+1));
+            System.out.println("游戏 #" + (i+1));
             System.out.println(record);
             System.out.println("------------------------");
         }

@@ -38,12 +38,12 @@ public class Record {
 
     public String toString()
     {
-        String info = "Size of Rubik's Cube = " + rubiksCubeSize;
-        info += "\nNumber of actions/rotations taken = " + actionCount;
+        String info = "魔方尺寸 = " + rubiksCubeSize;
+        info += "\n行动数/旋转数量 = " + actionCount;
         if (isSolved)
-            info += "\nThis Rubik's Cube is solved";
+            info += "\n该魔方被解开了";
         else
-            info += "\nThis Rubik's Cube is not solved";
+            info += "\n该魔方未能被解开";
         return info;
     }
 }

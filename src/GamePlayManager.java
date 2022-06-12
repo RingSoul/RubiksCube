@@ -134,7 +134,6 @@ public class GamePlayManager {
     }
 
 
-    // use
     private void processChoiceAndUpdateRecord(String choice, Record record)
     {
         if (choice.equals("1"))

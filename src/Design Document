@@ -138,10 +138,13 @@ methods:
                                 --> asks the user for name
 - private void constructRubiksCube() --> initializes the rubiksCube by asking for size
                                      --> used in the constructor
-- private void processChoice(String choice, Record record) --> process the user input and perform corresponding action
+- private void processChoiceAndUpdateRecord(String choice, Record record) --> process the user input and perform corresponding action
                                                            --> if the action is performed, the actionCount in record is incremented
-- private void endGame(Record record) --> end the game
+- private void endGameAndSaveData(Record record) --> end the game
                                       --> store all info about this round of game into the file, based on the record
+- private void presentOptionsForReturningPlayer() --> prints options to returning player and based on their input, calls a method from the Player class or move on to the game
+- private void isNumber(String str) --> checks if a String object can be parsed into number without error (true if it can, false if not)
+- private void isWithinRange(int input, int lowerBound, int upperBound --> return true if input is a number between lowerBound and upperBound, false otherwise
 
 
 

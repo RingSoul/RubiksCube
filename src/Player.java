@@ -75,8 +75,9 @@ public class Player {
         }
     }
 
-    public void reportBestRecordByActionCount()
+    public String reportBestRecordByActionCount()
     {
+        String report = "";
         Record bestGame = null;
         int lowestActionCount = Integer.MAX_VALUE;
         for (Record record : records)
@@ -89,17 +90,19 @@ public class Player {
         }
         if (bestGame == null)
         {
-            System.out.println("Ooooops, you have not solved any Rubik's Cube yet...");
+            report += "Ooooops, you have not solved any Rubik's Cube yet...";
         }
         else
         {
-            System.out.print("Your best record is when you solved a " + bestGame.getRubiksCubeSize() + "^3 Rubik's Cube ");
-            System.out.println("in " + bestGame.getActionCount() + " rotations!");
+            report += "Your best record is when you solved a " + bestGame.getRubiksCubeSize() + "^3 Rubik's Cube ";
+            report += "in " + bestGame.getActionCount() + " rotations!\n";
         }
+        return report;
     }
 
-    public void reportLargestSize()
+    public String reportLargestSize()
     {
+        String report = "";
         if (records.size() > 0)
         {
             int maxSize = records.get(0).getRubiksCubeSize();
@@ -109,19 +112,22 @@ public class Player {
                     maxSize = r.getRubiksCubeSize();
                 }
             }
-            System.out.println("The biggest Rubik's Cube you ever tried is " + maxSize + "^3.");
+            report += "The biggest Rubik's Cube you ever tried is " + maxSize + "^3.\n";
         }
+        return report;
     }
 
-    public void presentAllRecords()
+    public String presentAllRecords()
     {
+        String report = "";
         for (int i = 0; i < records.size(); i++)
         {
             Record record = records.get(i);
-            System.out.println("Game #" + (i+1));
-            System.out.println(record);
-            System.out.println("------------------------");
+            report += "Game #" + (i+1) + "\n";
+            report += record + "\n";
+            report += "------------------------\n";
         }
+        return report;
     }
 
 }

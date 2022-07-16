@@ -272,15 +272,18 @@ public class GamePlayManager {
             System.out.println();
             if (command.equals("1"))
             {
-                player.reportBestRecordByActionCount();
+                String report = player.reportBestRecordByActionCount();
+                System.out.println(report);
             }
             else if (command.equals("2"))
             {
-                player.reportLargestSize();
+                String report = player.reportLargestSize();
+                System.out.println(report);
             }
             else if (command.equals("3"))
             {
-                player.presentAllRecords();
+                String report = player.presentAllRecords();
+                System.out.println(report);
             }
             else
             {
